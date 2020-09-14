@@ -7,6 +7,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button mBtnNotification;
     String MY_CHANNEL_ID = "MY_CHANNEL_ID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +36,17 @@ public class MainActivity extends AppCompatActivity {
                                 .setContentText("Ứng dụng có bản cập nhật mới")
                                 .setSmallIcon(R.mipmap.ic_launcher)
                                 .setShowWhen(true)
+                                .setStyle(
+                                        new NotificationCompat
+                                                .BigPictureStyle()
+                                                .bigPicture(
+                                                        BitmapFactory.decodeResource(
+                                                                getResources(),
+                                                                R.mipmap.ic_launcher
+                                                        )))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH);
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel notificationChannel = new NotificationChannel(
                             MY_CHANNEL_ID,
                             "myapp",
