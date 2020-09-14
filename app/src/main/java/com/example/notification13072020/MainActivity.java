@@ -6,7 +6,9 @@ import androidx.core.app.NotificationCompat;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.session.MediaSession;
 import android.os.Build;
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button mBtnNotification;
     String MY_CHANNEL_ID = "MY_CHANNEL_ID";
-
+    int REQUEST_CODE_OPEN_APP = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         mBtnNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent =
+                        PendingIntent.getActivity(
+                                MainActivity.this,
+                                REQUEST_CODE_OPEN_APP,
+                                intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationCompat.Builder builder =
                         new NotificationCompat
                                 .Builder(MainActivity.this, MY_CHANNEL_ID)
@@ -36,13 +47,14 @@ public class MainActivity extends AppCompatActivity {
                                 .setContentText("Ứng dụng có bản cập nhật mới")
                                 .setSmallIcon(R.mipmap.ic_launcher)
                                 .setShowWhen(true)
+                                .setContentIntent(pendingIntent)
                                 .setStyle(
                                         new NotificationCompat
                                                 .BigPictureStyle()
                                                 .bigPicture(
                                                         BitmapFactory.decodeResource(
                                                                 getResources(),
-                                                                R.mipmap.ic_launcher
+                                                                R.drawable.hinhdemo
                                                         )))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH);
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
